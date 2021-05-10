@@ -25,11 +25,13 @@ export class AppComponent implements OnInit {
   public timestamp: number;
   public pageSize = 10;
   public page = 1;
+  public barChart: Chart;
+  public pieChart: Chart;
+
 
   constructor(private dashboardService: DashboardService) {
     this.dashboardService.getHttpTraces().subscribe(
       (response: any) => {
-        console.log(response.traces);
         this.processTraces(response.traces);
       }
     );
@@ -45,10 +47,15 @@ export class AppComponent implements OnInit {
   private getTraces(): void {
     this.dashboardService.getHttpTraces().subscribe(
       (response: any) => {
-        console.log(response.traces);
         this.processTraces(response.traces);
-        this.initializeBarChart();
-        this.initializePieChart();
+        if (this.barChart) {
+          this.barChart.destroy();
+        }
+        this.barChart = this.initializeBarChart();
+        if (this.pieChart) {
+          this.pieChart.destroy();
+        }
+        this.pieChart = this.initializePieChart();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -59,7 +66,6 @@ export class AppComponent implements OnInit {
   private getCpuUsage(): void {
     this.dashboardService.getSystemCpu().subscribe(
       (response: SystemCpu) => {
-        console.log(response);
         this.systemCpu = response;
       },
       (error: HttpErrorResponse) => {
@@ -71,7 +77,6 @@ export class AppComponent implements OnInit {
   private getSystemHealth(): void {
     this.dashboardService.getSystemHealth().subscribe(
       (response: SystemHealth) => {
-        console.log(response);
         this.systemHealth = response;
         this.systemHealth.components.diskSpace.details.free = this.formatBytes(this.systemHealth.components.diskSpace.details.free);
       },
@@ -96,7 +101,6 @@ export class AppComponent implements OnInit {
   private getProcessUpTime(isUpdateTime: boolean): void {
     this.dashboardService.getProcessUpTime().subscribe(
       (response: any) => {
-        console.log(response);
         this.timestamp = Math.round(response.measurements[0].value);
         this.processUpTime = this.formateUpTime(this.timestamp);
         if (isUpdateTime) {
@@ -137,17 +141,39 @@ export class AppComponent implements OnInit {
     return new Chart(element, {
       type: ChartType.BAR,
       data: {
-        labels: ['200', '404', '400', '500'],
+        labels: ' ',
         datasets: [{
-          data: [this.http200Traces.length, this.http404Traces.length, this.http400Traces.length, this.http500Traces.length],
-          backgroundColor: ['rgb(40,167,69)', 'rgb(0,123,255)', 'rgb(253,126,20)', 'rgb(220,53,69)'],
-          borderColor: ['rgb(40,167,69)', 'rgb(0,123,255)', 'rgb(253,126,20)', 'rgb(220,53,69)'],
-          borderWidth: 3
+          label: '200',
+          data: [this.http200Traces.length],
+          backgroundColor: '#2ed8b6',
+          borderColor: '#2ed8b6',
+        }, {
+          label: '404',
+          data: [this.http404Traces.length],
+          backgroundColor: '#4099ff',
+          borderColor: '#4099ff',
+        }, {
+          label: '400',
+          data: [this.http400Traces.length],
+          backgroundColor: '#FFB64D',
+          borderColor: '#FFB64D',
+        }, {
+          label: '500',
+          data: [this.http500Traces.length],
+          backgroundColor: '#FF5370',
+          borderColor: '#FF5370',
         }]
       },
       options: {
-        title: {display: true, text: [`Last 100 Requests as of ${this.formatDate(new Date())}`]},
-        legend: {display: false},
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: `Last 100 Requests as of ${this.formatDate(new Date())}`
+          }
+        },
         scales: {
           yAxes: [{
             ticks: {
@@ -168,16 +194,23 @@ export class AppComponent implements OnInit {
         labels: ['200', '404', '400', '500'],
         datasets: [{
           data: [this.http200Traces.length, this.http404Traces.length, this.http400Traces.length, this.http500Traces.length],
-          backgroundColor: ['rgb(40,167,69)', 'rgb(0,123,255)', 'rgb(253,126,20)', 'rgb(220,53,69)'],
-          borderColor: ['rgb(40,167,69)', 'rgb(0,123,255)', 'rgb(253,126,20)', 'rgb(220,53,69)'],
+          backgroundColor: ['#2ed8b6', '#4099ff', '#FFB64D', '#FF5370'],
+          borderColor: ['#2ed8b6', '#4099ff', '#FFB64D', '#FF5370'],
           borderWidth: 3
         }]
       },
       options: {
         maintainAspectRatio: false,
-        title: {display: true, text: `Last 100 Requests as of ${this.formatDate(new Date())}`},
-        legend: {display: true},
         display: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: `Last 100 Requests as of ${this.formatDate(new Date())}`
+          }
+        }
       }
     });
   }
@@ -229,12 +262,6 @@ export class AppComponent implements OnInit {
     const dd = date.getDate();
     const mm = date.getMonth() + 1;
     const year = date.getFullYear();
-    if (dd < 10) {
-      const day = `0${dd}`;
-    }
-    if (mm < 10) {
-      const month = `0${mm}`;
-    }
     return `${mm}/${dd}/${year}`;
   }
 }
