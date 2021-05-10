@@ -11,7 +11,8 @@
         <span><i class="fa fa-database"></i> DB: {{systemHealth?.components.db.details.database}}
           - {{systemHealth?.components.db.status}}</span>&nbsp;&nbsp;
         <span><i class="fa fa-hdd-o"></i> Disk Space: {{systemHealth?.components.diskSpace.details.free}}</span>&nbsp;&nbsp;
-        <span [ngClass]="{'text-danger': systemCpu?.measurements[0].value < 2}"><i class="fa fa-microchip"></i> Processors: {{systemCpu?.measurements[0].value}}</span>&nbsp;&nbsp;
+        <span [ngClass]="{'text-danger': systemCpu?.measurements[0].value < 2}"><i class="fa fa-microchip"></i>
+          Processors: {{systemCpu?.measurements[0].value}}</span>&nbsp;&nbsp;
         <span><i class="fa fa-clock-o"></i> Up Time: {{processUpTime}}</span>&nbsp;&nbsp;
       </li>
     </ul>
@@ -35,7 +36,6 @@
         </div>
       </div>
     </div>
-
 
     <div class="col-md-4 col-xl-3">
       <div class="card bg-c-blue order-card">
@@ -81,7 +81,8 @@
 
     <div class="col-sm-6 col-md-6 col-lg-12" style="margin-top: 50px;">
       <h5 class="pull-left">HTTP Traces</h5>
-      <button (click)="exportTableToExcel()" type="button" class="btn btn-primary btn-sm pull-right" style="margin-bottom: 10px">
+      <button (click)="exportTableToExcel()" type="button" class="btn btn-primary btn-sm pull-right"
+              style="margin-bottom: 10px; background-color: #4099ff">
         <i class="fa fa-external-link" aria-hidden="true"></i>
         export to Excel
       </button>
@@ -132,9 +133,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">HTTP Trace Details</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-          <!--          <span aria-hidden="true">&times;</span>-->
-        </button>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body right-left-margin">
         <ul class="nav bg-light nav-pills rounded nav-fill mb-3" role="tablist">

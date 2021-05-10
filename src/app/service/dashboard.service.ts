@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
-import {SystemHealth} from "../interface/system-health";
-import {SystemCpu} from "../interface/system-cpu";
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs';
+import {SystemHealth} from '../interface/system-health';
+import {SystemCpu} from '../interface/system-cpu';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,6 @@ export class DashboardService {
   private SERVER_URL = environment.serverUrl;
 
   constructor(private http: HttpClient) {
-
   }
 
   public getHttpTraces(): Observable<any> {
