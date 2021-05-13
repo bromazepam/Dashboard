@@ -67,4 +67,5 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Screenshot
 
-![dashboard](https://raw.githubusercontent.com/bromazepam/Dashboard/master/src/assets/Admin%20Dashboard.png?token=AMQKJJRB5S6UNBEM4ZECO3TATKY6M)
+![dashboard](src/assets/Admin%20Dashboard.png)
+
