@@ -11,14 +11,14 @@ application infrastructure on one dashboard page.
 - [Chart.js](https://projectlombok.org/download)
 
 ## How it works
-###Angular app
+### Angular app
 All you need to do is to set up `serverUrl` in `dashboard\src\environments\environment.ts`
 
 ```shell
 serverUrl: 'http://localhost:8080/actuator'
 ```
 
-###Spring Boot app
+### Spring Boot app
 
 Address from serverUrl `http://localhost:8080/actuator` in Angular app represents local server and port
 on which Spring Boot app runs. Port `8080` is the default port but you can specify different one in your
